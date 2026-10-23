@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frequently Asked Questions & Helpdesk | Online Complaint Registration and Tracking System</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Custom Modern Stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-custom sticky-top py-3">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <div class="brand-icon">
+          <i class="bi bi-shield-check"></i>
+        </div>
+        <span>Resolve<span class="text-primary">Track</span></span>
+      </a>
+      
+      <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+        <i class="bi bi-list fs-2 text-dark"></i>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarMain">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+          <li class="nav-item">
+            <a class="nav-link" href="/"><i class="bi bi-house-door me-1"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/register.html"><i class="bi bi-plus-circle me-1"></i> Lodge Complaint</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/track.html"><i class="bi bi-search me-1"></i> Track Status</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard.html"><i class="bi bi-person-workspace me-1"></i> My Complaints</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/faq.html"><i class="bi bi-question-circle me-1"></i> Help & FAQs</a>
+          </li>
+          <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+            <a class="btn btn-outline-primary btn-sm px-3 py-2 fw-semibold rounded-3" href="/admin.html">
+              <i class="bi bi-person-lock me-1"></i> Admin Portal
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="py-4 bg-white border-bottom">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-1 small">
+          <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Helpdesk & FAQs</li>
+        </ol>
+      </nav>
+      <h2 class="fw-bold text-dark mb-0">Help Desk & Frequently Asked Questions</h2>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="py-5">
+    <div class="container">
+      <div class="row g-5">
+        
+        <!-- FAQ Accordion Column -->
+        <div class="col-lg-8">
+          <h4 class="fw-bold text-dark mb-4"><i class="bi bi-patch-question text-primary me-2"></i>General Inquiries</h4>
+
+          <div class="accordion" id="faqAccordion">
+            
+            <div class="accordion-item card-modern mb-3 border">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  How do I register a new grievance or complaint?
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-secondary small lh-base">
+                  Click on the <strong>Lodge Complaint</strong> tab in the navigation header. Fill in your complainant details, select the appropriate department category, select the urgency level, describe your grievance in detail, and optionally attach photos or PDF receipts. Upon submission, an official Complaint ID (e.g. <code>CMP-2026-XXXXX</code>) and scannable QR Code will be generated.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item card-modern mb-3 border">
+              <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  How can I check the live progress of my complaint?
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-secondary small lh-base">
+                  Navigate to the <strong>Track Status</strong> page and enter your Complaint ID. You will be able to see the interactive 4-stage progress stepper (Submitted &rarr; Under Review &rarr; In Progress &rarr; Resolved), the assigned officer's name, and live timeline remarks.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item card-modern mb-3 border">
+              <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Can I track all my complaints together without remembering every ID?
+                </button>
+              </h2>
+              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-secondary small lh-base">
+                  Yes! Use the <strong>My Complaints</strong> page. Simply enter your registered email address or 10-digit mobile number to see your complete grievance history, filter by status, and click through to any case.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item card-modern mb-3 border">
+              <h2 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                  What file formats are accepted for supporting evidence?
+                </button>
+              </h2>
+              <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-secondary small lh-base">
+                  You can upload image files (<strong>JPG, JPEG, PNG, WEBP</strong>) or document files (<strong>PDF</strong>) up to a maximum size of <strong>5 MB</strong>. The system automatically inspects file headers and MIME types to prevent malicious uploads.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item card-modern mb-3 border">
+              <h2 class="accordion-header" id="headingFive">
+                <button class="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                  How does the Citizen Feedback & Rating system work?
+                </button>
+              </h2>
+              <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-secondary small lh-base">
+                  Once an officer marks your grievance as <strong>Resolved</strong>, an interactive 5-star rating widget becomes available on your tracking page. You can rate the quality of service from 1 to 5 stars and leave remarks.
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- SLA Table -->
+          <h4 class="fw-bold text-dark mt-5 mb-3" id="sla"><i class="bi bi-clock-history text-success me-2"></i>Service Level Agreements (SLAs)</h4>
+          <div class="table-responsive bg-white rounded-3 border">
+            <table class="table table-bordered mb-0 small">
+              <thead class="bg-light">
+                <tr>
+                  <th>Priority Level</th>
+                  <th>First Response Time</th>
+                  <th>Resolution Target</th>
+                  <th>Typical Scope</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge-priority urgent">Urgent</span></td>
+                  <td>Within 2 Hours</td>
+                  <td>Within 12-24 Hours</td>
+                  <td>Electrical hazard, water pipeline burst, server outage</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-priority high">High</span></td>
+                  <td>Within 6 Hours</td>
+                  <td>Within 24-48 Hours</td>
+                  <td>Lab Wi-Fi failure, classroom projector, hostel cooler</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-priority medium">Medium</span></td>
+                  <td>Within 24 Hours</td>
+                  <td>Within 3-5 Working Days</td>
+                  <td>Bus schedule discrepancy, library fine discrepancy</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-priority low">Low</span></td>
+                  <td>Within 48 Hours</td>
+                  <td>Within 7 Working Days</td>
+                  <td>General inquiry, cosmetic repair suggestion</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <!-- Sidebar Contact Info -->
+        <div class="col-lg-4" id="escalation">
+          <div class="card card-modern p-4 border-0 shadow-sm mb-4">
+            <h5 class="fw-bold text-dark mb-3"><i class="bi bi-telephone-inbound text-primary me-2"></i>Emergency Redressal Desk</h5>
+            
+            <div class="mb-3">
+              <strong class="d-block small text-muted">Central Grievance Redressal Cell</strong>
+              <div class="fw-bold text-dark">Administrative Block, Ground Floor, Room 102</div>
+            </div>
+
+            <div class="mb-3">
+              <strong class="d-block small text-muted">Helpdesk Helpline:</strong>
+              <div class="fw-bold text-primary fs-5">+91 (0) 44-2250-9900</div>
+              <small class="text-muted">Monday - Saturday (9:00 AM - 5:30 PM)</small>
+            </div>
+
+            <div class="mb-3">
+              <strong class="d-block small text-muted">Official Email:</strong>
+              <div class="fw-bold text-dark">grievance-cell@institution.edu</div>
+            </div>
+
+            <div class="p-3 bg-light rounded-3 border small">
+              <i class="bi bi-shield-exclamation text-warning me-1"></i> For life-safety or security emergencies after hours, contact Campus Security at extension <strong>108 / 100</strong>.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-custom">
+    <div class="container text-center small text-muted">
+      &copy; 2026 Online Complaint Registration and Tracking System. Built for Web Technology Internal Assessment.
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Core Main Script -->
+  <script src="/js/main.js"></script>
+</body>
+</html>

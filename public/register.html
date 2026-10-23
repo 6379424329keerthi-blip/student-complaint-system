@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Grievance | Online Complaint Registration and Tracking System</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Custom Modern Stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-custom sticky-top py-3">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <div class="brand-icon">
+          <i class="bi bi-shield-check"></i>
+        </div>
+        <span>Resolve<span class="text-primary">Track</span></span>
+      </a>
+      
+      <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+        <i class="bi bi-list fs-2 text-dark"></i>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarMain">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+          <li class="nav-item">
+            <a class="nav-link" href="/"><i class="bi bi-house-door me-1"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/register.html"><i class="bi bi-plus-circle me-1"></i> Lodge Complaint</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/track.html"><i class="bi bi-search me-1"></i> Track Status</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard.html"><i class="bi bi-person-workspace me-1"></i> My Complaints</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/faq.html"><i class="bi bi-question-circle me-1"></i> Help & FAQs</a>
+          </li>
+          <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+            <a class="btn btn-outline-primary btn-sm px-3 py-2 fw-semibold rounded-3" href="/admin.html">
+              <i class="bi bi-person-lock me-1"></i> Admin Portal
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="py-4 bg-white border-bottom">
+    <div class="container">
+      <div class="d-flex flex-wrap justify-content-between align-items-center">
+        <div>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-1 small">
+              <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Lodge Complaint</li>
+            </ol>
+          </nav>
+          <h2 class="fw-bold text-dark mb-0">Official Grievance Registration Form</h2>
+        </div>
+        <div class="badge bg-primary-subtle text-primary p-2 px-3 rounded-pill mt-2 mt-md-0 fw-bold">
+          <i class="bi bi-shield-lock me-1"></i> Verified & Encrypted
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-9">
+          
+          <!-- Instructions Card -->
+          <div class="alert alert-info border-0 rounded-4 d-flex align-items-center gap-3 p-3 mb-4 shadow-sm">
+            <i class="bi bi-info-circle-fill fs-3 text-info"></i>
+            <div class="small">
+              <strong>Instructions:</strong> Please provide accurate contact and incident information. All fields marked with an asterisk (<span class="text-danger">*</span>) are strictly validated. You will receive an official tracking ticket upon successful submission.
+            </div>
+          </div>
+
+          <!-- Registration Form Card -->
+          <div class="card card-modern p-4 p-md-5 border-0 shadow-lg">
+            <form id="complaintForm" novalidate enctype="multipart/form-data">
+              
+              <!-- SECTION 1: Complainant Details -->
+              <div class="mb-4">
+                <div class="d-flex align-items-center gap-2 border-bottom pb-2 mb-3">
+                  <span class="badge bg-primary rounded-circle p-2 px-3 fw-bold">1</span>
+                  <h5 class="fw-bold text-dark mb-0">Complainant Identification</h5>
+                </div>
+
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="fullName" class="form-label">Full Legal Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="fullName" name="fullName" placeholder="e.g. Rahul Sharma" required>
+                    <div class="invalid-feedback">Full name is required (2-70 alphabetic characters).</div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="email" class="form-label">Official Email Address <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="e.g. rahul.sharma@institution.edu" required>
+                    <div class="invalid-feedback">A valid email address is required for status notifications.</div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="phone" class="form-label">10-Digit Mobile Number <span class="text-danger">*</span></label>
+                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="e.g. 9876543210" maxlength="10" required>
+                    <div class="invalid-feedback">Please enter a valid 10-digit mobile number.</div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="userType" class="form-label">Complainant Affiliation</label>
+                    <select class="form-select" id="userType" name="userType">
+                      <option value="Student" selected>Student</option>
+                      <option value="Faculty">Faculty Member</option>
+                      <option value="Staff">Administrative Staff</option>
+                      <option value="Resident">Campus Resident</option>
+                      <option value="Public Visitor">Visitor / Public</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="idNumber" class="form-label">Roll No / Employee ID</label>
+                    <input type="text" class="form-control" id="idNumber" name="idNumber" placeholder="e.g. 23CS045">
+                    <small class="text-muted" style="font-size: 0.75rem;">Optional institutional identifier</small>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 2: Grievance Details -->
+              <div class="mb-4">
+                <div class="d-flex align-items-center gap-2 border-bottom pb-2 mb-3">
+                  <span class="badge bg-primary rounded-circle p-2 px-3 fw-bold">2</span>
+                  <h5 class="fw-bold text-dark mb-0">Grievance Information</h5>
+                </div>
+
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="category" class="form-label">Department / Grievance Category <span class="text-danger">*</span></label>
+                    <select class="form-select" id="category" name="category" required>
+                      <option value="" disabled selected>-- Select Responsible Department --</option>
+                      <option value="Infrastructure">Infrastructure (Civil, Furniture, Buildings)</option>
+                      <option value="Academic">Academic (Lectures, Timetable, Exams)</option>
+                      <option value="Hostel">Hostel & Housing (Water, Rooms, Mess)</option>
+                      <option value="IT & Network">IT & Network (Wi-Fi, Labs, Systems)</option>
+                      <option value="Sanitation">Sanitation (Restrooms, Waste, Cleanliness)</option>
+                      <option value="Transport">Transport (Buses, Parking, Routes)</option>
+                      <option value="Administrative">Administrative (Fees, Certificates, Staff)</option>
+                      <option value="Other">Other Miscellaneous</option>
+                    </select>
+                    <div class="invalid-feedback">Please select a department category.</div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <label for="priority" class="form-label">Priority Level <span class="text-danger">*</span></label>
+                    <select class="form-select" id="priority" name="priority">
+                      <option value="Low">Low (General inquiry)</option>
+                      <option value="Medium" selected>Medium (Standard issue)</option>
+                      <option value="High">High (Impacting workflow)</option>
+                      <option value="Urgent">Urgent (Safety / Hazard)</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-3">
+                    <label for="location" class="form-label">Incident Location</label>
+                    <input type="text" class="form-control" id="location" name="location" placeholder="e.g. CS Lab 302, Block B">
+                  </div>
+
+                  <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <label for="title" class="form-label">Complaint Subject / Title <span class="text-danger">*</span></label>
+                      <span class="char-counter" id="titleCounter">0/120</span>
+                    </div>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Brief summary of the issue (min 5 characters)" maxlength="120" required>
+                    <div class="invalid-feedback">Title must be between 5 and 120 characters.</div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <label for="description" class="form-label">Detailed Grievance Description <span class="text-danger">*</span></label>
+                      <span class="char-counter" id="descCounter">0/2000</span>
+                    </div>
+                    <textarea class="form-control" id="description" name="description" rows="5" placeholder="Explain the problem thoroughly, including specific dates, equipment codes, or circumstances (min 15 characters)..." maxlength="2000" required></textarea>
+                    <div class="invalid-feedback">Description must be at least 15 characters to provide adequate context.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 3: Attachments -->
+              <div class="mb-4">
+                <div class="d-flex align-items-center gap-2 border-bottom pb-2 mb-3">
+                  <span class="badge bg-primary rounded-circle p-2 px-3 fw-bold">3</span>
+                  <h5 class="fw-bold text-dark mb-0">Supporting Evidence (Optional)</h5>
+                </div>
+
+                <div class="upload-dropzone" onclick="document.getElementById('attachment').click();">
+                  <i class="bi bi-cloud-arrow-up upload-icon"></i>
+                  <h6 class="fw-bold text-dark mb-1">Click to browse or drag & drop files here</h6>
+                  <p class="text-muted small mb-0">Allowed formats: JPG, PNG, WEBP, or PDF (Max file size: 5 MB)</p>
+                  <input type="file" id="attachment" name="attachment" class="d-none" accept=".jpg,.jpeg,.png,.webp,.pdf">
+                </div>
+                <div class="invalid-feedback d-block" id="fileFeedback"></div>
+                <div id="filePreview"></div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary-custom py-3 fs-6" id="submitBtn">
+                  <i class="bi bi-send-check me-2"></i> Submit Complaint
+                </button>
+              </div>
+
+              <div class="text-center text-muted small mt-3">
+                <i class="bi bi-shield-check text-success me-1"></i> By submitting this form, you acknowledge that all information provided is genuine and subject to departmental verification.
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- SUCCESS ACKNOWLEDGMENT MODAL WITH QR CODE -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content rounded-4 border-0 shadow-xl overflow-hidden">
+        <div class="modal-header bg-success text-white p-4">
+          <div class="d-flex align-items-center gap-3">
+            <i class="bi bi-check-circle-fill fs-1"></i>
+            <div>
+              <h4 class="modal-title fw-bold" id="successModalLabel">Complaint Lodged Successfully!</h4>
+              <p class="mb-0 opacity-75 small">An official acknowledgment ticket has been created in the database.</p>
+            </div>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body p-4 p-md-5" id="printableTicket">
+          <!-- Printable Header (visible on print) -->
+          <div class="d-none d-print-block text-center border-bottom pb-3 mb-3">
+            <h3 class="fw-bold">CENTRAL GRIEVANCE REDRESSAL CELL</h3>
+            <h5>Official Complaint Acknowledgment Slip</h5>
+          </div>
+
+          <div class="row align-items-center g-4">
+            <div class="col-md-8">
+              <div class="mb-3">
+                <span class="text-muted small text-uppercase fw-bold">Official Tracking Ticket Number:</span>
+                <div class="d-flex align-items-center gap-2 mt-1">
+                  <span class="fs-2 fw-800 font-monospace text-primary" id="modalTicketId">CMP-2026-XXXXX</span>
+                  <button type="button" class="btn btn-sm btn-outline-secondary no-print" id="copyTicketBtn" title="Copy Ticket ID">
+                    <i class="bi bi-clipboard"></i> Copy
+                  </button>
+                </div>
+              </div>
+
+              <div class="p-3 bg-light rounded-3 border mb-3">
+                <div class="row g-2 small">
+                  <div class="col-sm-6">
+                    <strong class="text-muted">Subject:</strong> <span class="text-dark fw-semibold" id="modalTitle"></span>
+                  </div>
+                  <div class="col-sm-6">
+                    <strong class="text-muted">Department:</strong> <span class="text-dark fw-semibold" id="modalCategory"></span>
+                  </div>
+                  <div class="col-sm-6">
+                    <strong class="text-muted">Priority:</strong> <span id="modalPriority"></span>
+                  </div>
+                  <div class="col-sm-6">
+                    <strong class="text-muted">Complainant:</strong> <span class="text-dark fw-semibold" id="modalName"></span>
+                  </div>
+                  <div class="col-sm-6">
+                    <strong class="text-muted">Registered Email:</strong> <span class="text-dark" id="modalEmail"></span>
+                  </div>
+                  <div class="col-sm-6">
+                    <strong class="text-muted">Submission Date:</strong> <span class="text-dark" id="modalDate"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="alert alert-warning border-0 small mb-0">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i> Please preserve your Ticket ID to monitor real-time updates and rate resolution quality.
+              </div>
+            </div>
+
+            <div class="col-md-4 text-center">
+              <div class="p-3 bg-white border rounded-3 shadow-sm d-inline-block">
+                <img id="modalQrCode" src="" alt="Direct Tracking QR Code" class="img-fluid rounded mb-2" style="width: 150px; height: 150px;">
+                <div class="small fw-bold text-dark">Direct Tracking QR</div>
+                <div class="text-muted" style="font-size: 0.7rem;">Scan via smartphone camera</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer bg-light p-3 no-print d-flex justify-content-between">
+          <button type="button" class="btn btn-outline-secondary" onclick="window.print();">
+            <i class="bi bi-printer me-1"></i> Print Slip
+          </button>
+          <div class="d-flex gap-2">
+            <a href="/" class="btn btn-outline-dark">Return to Home</a>
+            <a href="#" id="modalTrackLink" class="btn btn-primary-custom">
+              <i class="bi bi-search me-1"></i> Track Live Status
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer-custom">
+    <div class="container text-center small text-muted">
+      &copy; 2026 Online Complaint Registration and Tracking System. Built for Web Technology Internal Assessment.
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Core Main Script -->
+  <script src="/js/main.js"></script>
+  <!-- Form Validation & Submission Script -->
+  <script src="/js/register.js"></script>
+</body>
+</html>

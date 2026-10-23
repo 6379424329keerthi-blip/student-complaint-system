@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin & Officer Portal | Online Complaint Registration and Tracking System</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Custom Modern Stylesheets -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="bg-light">
+
+  <!-- Admin Top Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+    <div class="container-fluid px-lg-4">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="/admin.html">
+        <div class="brand-icon bg-primary">
+          <i class="bi bi-shield-lock-fill"></i>
+        </div>
+        <span class="fw-bold">ResolveTrack <span class="badge bg-primary text-white ms-1 small">Admin Control</span></span>
+      </a>
+
+      <div class="d-flex align-items-center gap-3 ms-auto">
+        <a href="/" class="btn btn-sm btn-outline-light d-none d-md-inline-flex align-items-center gap-1">
+          <i class="bi bi-box-arrow-up-right"></i> Citizen Portal
+        </a>
+        <button type="button" class="btn btn-sm btn-danger px-3" id="adminLogoutBtn" style="display: none;">
+          <i class="bi bi-power me-1"></i> Sign Out
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="py-4">
+    <div class="container-fluid px-lg-4">
+
+      <!-- ===================================================================
+           VIEW 1: ADMIN LOGIN SCREEN (When not authenticated)
+           =================================================================== -->
+      <section id="adminAuthSection" style="display: block;">
+        <div class="row justify-content-center py-5">
+          <div class="col-md-6 col-lg-4">
+            <div class="card card-modern p-4 p-md-5 border-0 shadow-lg">
+              <div class="text-center mb-4">
+                <div class="brand-icon bg-primary mx-auto mb-3" style="width: 54px; height: 54px; font-size: 1.5rem;">
+                  <i class="bi bi-lock-fill"></i>
+                </div>
+                <h4 class="fw-bold text-dark">Staff / Officer Login</h4>
+                <p class="text-muted small">Sign in to manage and resolve grievances</p>
+              </div>
+
+              <form id="adminLoginForm">
+                <div class="mb-3">
+                  <label for="adminUsername" class="form-label small fw-bold">Username or Email</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-person"></i></span>
+                    <input type="text" id="adminUsername" class="form-control" placeholder="admin or officer_rajesh" required>
+                  </div>
+                </div>
+
+                <div class="mb-4">
+                  <label for="adminPassword" class="form-label small fw-bold">Password</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-key"></i></span>
+                    <input type="password" id="adminPassword" class="form-control" placeholder="••••••••" required>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary-custom w-100 py-2 fs-6" id="loginSubmitBtn">
+                  <i class="bi bi-box-arrow-in-right me-2"></i> Log In to Dashboard
+                </button>
+              </form>
+
+              <!-- Demo Credentials Helper Box for Evaluation -->
+              <div class="mt-4 p-3 bg-light rounded-3 border small">
+                <div class="fw-bold text-dark mb-1"><i class="bi bi-info-circle-fill text-primary me-1"></i> Assessment Demo Credentials:</div>
+                <div class="d-flex justify-content-between py-1 border-bottom">
+                  <span><strong>SuperAdmin:</strong> admin</span>
+                  <span class="text-muted">Password: <code>admin123</code></span>
+                </div>
+                <div class="d-flex justify-content-between pt-1">
+                  <span><strong>Officer:</strong> officer_rajesh</span>
+                  <span class="text-muted">Password: <code>officer123</code></span>
+                </div>
+                <div class="mt-2 text-center">
+                  <button type="button" class="btn btn-sm btn-link py-0 text-decoration-none" onclick="document.getElementById('adminUsername').value='admin'; document.getElementById('adminPassword').value='admin123';">
+                    Click to auto-fill SuperAdmin
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           VIEW 2: ADMIN ANALYTICS & MANAGEMENT DASHBOARD (When authenticated)
+           =================================================================== -->
+      <section id="adminDashboardSection" style="display: none;">
+        
+        <!-- Officer Info Banner -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center bg-white p-3 rounded-3 border mb-4 shadow-sm">
+          <div class="d-flex align-items-center gap-3">
+            <div class="brand-icon bg-primary text-white" style="width: 44px; height: 44px;">
+              <i class="bi bi-person-check-fill"></i>
+            </div>
+            <div>
+              <h5 class="fw-bold mb-0 text-dark" id="adminNameDisplay">Administrator</h5>
+              <small class="text-muted" id="adminRoleDisplay">SuperAdmin • Central Grievance Cell</small>
+            </div>
+          </div>
+          <div class="d-flex gap-2 mt-2 mt-md-0">
+            <button type="button" class="btn btn-outline-success btn-sm d-flex align-items-center gap-1" id="exportCsvBtn">
+              <i class="bi bi-file-earmark-spreadsheet"></i> Export Grievances (CSV)
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric KPI Cards -->
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-md-4 col-xl-2">
+            <div class="admin-stat-card card-primary">
+              <div>
+                <small class="text-muted fw-bold text-uppercase" style="font-size: 0.725rem;">Total Cases</small>
+                <h3 class="fw-bold mb-0 text-dark" id="metricTotal">0</h3>
+              </div>
+              <div class="stat-icon-box bg-primary-subtle text-primary">
+                <i class="bi bi-folder2-open"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-4 col-xl-2">
+            <div class="admin-stat-card card-warning">
+              <div>
+                <small class="text-muted fw-bold text-uppercase" style="font-size: 0.725rem;">Pending</small>
+                <h3 class="fw-bold mb-0 text-warning" id="metricPending">0</h3>
+              </div>
+              <div class="stat-icon-box bg-warning-subtle text-warning">
+                <i class="bi bi-hourglass-split"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-4 col-xl-2">
+            <div class="admin-stat-card card-info">
+              <div>
+                <small class="text-muted fw-bold text-uppercase" style="font-size: 0.725rem;">Under Review</small>
+                <h3 class="fw-bold mb-0 text-info" id="metricReview">0</h3>
+              </div>
+              <div class="stat-icon-box bg-info-subtle text-info">
+                <i class="bi bi-search"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-4 col-xl-2">
+            <div class="admin-stat-card card-primary">
+              <div>
+                <small class="text-muted fw-bold text-uppercase" style="font-size: 0.725rem;">In Progress</small>
+                <h3 class="fw-bold mb-0 text-primary" id="metricInProgress">0</h3>
+              </div>
+              <div class="stat-icon-box bg-primary-subtle text-primary">
+                <i class="bi bi-gear-wide-connected"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-4 col-xl-2">
+            <div class="admin-stat-card card-success">
+              <div>
+                <small class="text-muted fw-bold text-uppercase" style="font-size: 0.725rem;">Resolved</small>
+                <h3 class="fw-bold mb-0 text-success" id="metricResolved">0</h3>
+              </div>
+              <div class="stat-icon-box bg-success-subtle text-success">
+                <i class="bi bi-check2-circle"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-4 col-xl-2">
+            <div class="admin-stat-card card-danger">
+              <div>
+                <small class="text-muted fw-bold text-uppercase" style="font-size: 0.725rem;">Avg Resolution</small>
+                <h3 class="fw-bold mb-0 text-dark" id="metricAvgTime">0 hrs</h3>
+              </div>
+              <div class="stat-icon-box bg-danger-subtle text-danger">
+                <i class="bi bi-speedometer2"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row g-4 mb-4">
+          <div class="col-lg-6">
+            <div class="chart-card">
+              <h6 class="fw-bold text-dark mb-3"><i class="bi bi-pie-chart text-primary me-2"></i>Complaints by Department / Category</h6>
+              <div class="chart-container">
+                <canvas id="categoryChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="chart-card">
+              <h6 class="fw-bold text-dark mb-3"><i class="bi bi-bar-chart-steps text-info me-2"></i>Complaints by Urgency & Priority Level</h6>
+              <div class="chart-container">
+                <canvas id="priorityChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Complaints Table with Filter Bar -->
+        <div class="card card-modern border-0 shadow-sm p-4">
+          <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+            <div>
+              <h5 class="fw-bold text-dark mb-1">Central Grievance Redressal Records</h5>
+              <small class="text-muted">Manage complaints, assign officers, and submit resolution notices</small>
+            </div>
+          </div>
+
+          <!-- Filters Row -->
+          <div class="row g-2 mb-3">
+            <div class="col-md-5">
+              <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                <input type="text" id="adminFilterSearch" class="form-control" placeholder="Search by Ticket ID, Title, or Complainant...">
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <select id="adminFilterStatus" class="form-select">
+                <option value="All" selected>All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="Under Review">Under Review</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <select id="adminFilterCategory" class="form-select">
+                <option value="All" selected>All Departments / Categories</option>
+                <option value="Infrastructure">Infrastructure</option>
+                <option value="Academic">Academic</option>
+                <option value="Hostel">Hostel</option>
+                <option value="IT & Network">IT & Network</option>
+                <option value="Sanitation">Sanitation</option>
+                <option value="Transport">Transport</option>
+                <option value="Administrative">Administrative</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Data Table -->
+          <div class="table-responsive">
+            <table class="table table-modern align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Ticket ID</th>
+                  <th>Grievance Subject</th>
+                  <th>Category</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Complainant</th>
+                  <th>Submission Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminComplaintsTable">
+                <tr>
+                  <td colspan="8" class="text-center py-4">Loading complaints...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ===================================================================
+       UPDATE STATUS & OFFICER ASSIGNMENT MODAL
+       =================================================================== -->
+  <div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow-xl">
+        <div class="modal-header bg-dark text-white p-3">
+          <h5 class="modal-title fw-bold" id="updateModalLabel">
+            <i class="bi bi-pencil-square me-2"></i>Update Grievance Action
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form id="updateStatusForm">
+          <div class="modal-body p-4">
+            <input type="hidden" id="updateComplaintId">
+
+            <div class="mb-3">
+              <span class="badge bg-primary font-monospace fs-6 px-2 py-1 mb-1" id="modalTicketBadge">CMP-XXXX</span>
+              <h6 class="fw-bold text-dark mb-0" id="modalComplaintTitle">Title of Complaint</h6>
+            </div>
+
+            <div class="mb-3">
+              <label for="updateStatusSelect" class="form-label small fw-bold">Case Status <span class="text-danger">*</span></label>
+              <select id="updateStatusSelect" class="form-select" required>
+                <option value="Pending">Pending</option>
+                <option value="Under Review">Under Review</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-md-6">
+                <label for="updateOfficerName" class="form-label small fw-bold">Assigned Officer / Lead</label>
+                <input type="text" id="updateOfficerName" class="form-control" placeholder="e.g. Er. Rajesh Sharma">
+              </div>
+
+              <div class="col-md-6">
+                <label for="updateDepartment" class="form-label small fw-bold">Department</label>
+                <input type="text" id="updateDepartment" class="form-control" placeholder="e.g. IT & Network">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="updateNote" class="form-label small fw-bold">Progress Timeline Note</label>
+              <input type="text" id="updateNote" class="form-control" placeholder="e.g. Dispatched technician with spare router...">
+              <small class="text-muted" style="font-size: 0.75rem;">This note will appear in the public tracking timeline.</small>
+            </div>
+
+            <!-- Resolution / Rejection Remarks (Appears when Resolved or Rejected) -->
+            <div class="mb-3" id="remarksContainer" style="display: none;">
+              <label for="updateRemarks" class="form-label small fw-bold text-success">
+                Official Resolution / Closure Remarks <span class="text-danger">*</span>
+              </label>
+              <textarea id="updateRemarks" class="form-control" rows="3" placeholder="Detail the corrective actions taken, replaced parts, or reason for closure..."></textarea>
+            </div>
+          </div>
+
+          <div class="modal-footer bg-light p-3">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary-custom" id="saveStatusBtn">
+              <i class="bi bi-check2-circle me-1"></i> Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer-custom mt-5">
+    <div class="container text-center small text-muted">
+      &copy; 2026 Online Complaint Registration and Tracking System. Administrative & Grievance Cell.
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Chart.js 4.4.1 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Core Main Script -->
+  <script src="/js/main.js"></script>
+  <!-- Admin Script -->
+  <script src="/js/admin.js"></script>
+</body>
+</html>
