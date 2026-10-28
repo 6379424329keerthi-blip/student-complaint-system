@@ -131,13 +131,21 @@ document.addEventListener('DOMContentLoaded', () => {
   function showLogin() {
     if (authSection) authSection.style.display = 'block';
     if (dashboardSection) dashboardSection.style.display = 'none';
-    if (logoutBtn) logoutBtn.style.display = 'none';
+    if (logoutBtn) {
+      logoutBtn.classList.add('d-none');
+      logoutBtn.classList.remove('d-flex');
+      logoutBtn.style.setProperty('display', 'none', 'important');
+    }
   }
 
   function showDashboard(admin) {
     if (authSection) authSection.style.display = 'none';
     if (dashboardSection) dashboardSection.style.display = 'block';
-    if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+    if (logoutBtn) {
+      logoutBtn.classList.remove('d-none');
+      logoutBtn.classList.add('d-flex');
+      logoutBtn.style.removeProperty('display');
+    }
 
     if (adminNameDisplay) adminNameDisplay.textContent = admin.name;
     if (adminRoleDisplay) adminRoleDisplay.textContent = `${admin.role} • ${admin.department}`;
