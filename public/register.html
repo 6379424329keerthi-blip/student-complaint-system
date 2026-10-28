@@ -58,11 +58,6 @@
               <i class="bi bi-mortarboard me-1"></i> Student Login
             </a>
           </li>
-          <li class="nav-item ms-lg-1 mt-2 mt-lg-0">
-            <a class="btn btn-dark btn-sm px-3 py-2 fw-semibold rounded-3" href="/admin.html">
-              <i class="bi bi-person-lock me-1"></i> Officer Portal
-            </a>
-          </li>
         </ul>
       </div>
     </div>
@@ -94,17 +89,41 @@
       <div class="row justify-content-center">
         <div class="col-lg-9">
           
-          <!-- Instructions Card -->
-          <div class="alert alert-info border-0 rounded-4 d-flex align-items-center gap-3 p-3 mb-4 shadow-sm">
-            <i class="bi bi-info-circle-fill fs-3 text-info"></i>
-            <div class="small">
-              <strong>Instructions:</strong> Please provide accurate contact and incident information. All fields marked with an asterisk (<span class="text-danger">*</span>) are strictly validated. You will receive an official tracking ticket upon successful submission.
+          <!-- GATEKEEPER: Shown when student is NOT logged in -->
+          <div id="authRequiredGate" class="card card-modern p-5 border-0 shadow-lg text-center" style="display: none;">
+            <div class="feature-icon-wrapper feature-icon-warning mx-auto mb-3" style="width: 72px; height: 72px; font-size: 2.2rem;">
+              <i class="bi bi-shield-lock-fill"></i>
+            </div>
+            <h3 class="fw-bold text-dark mb-2">Student Authentication Required</h3>
+            <p class="text-muted max-w-500 mx-auto mb-4" style="font-size: 1.05rem;">
+              To register an official grievance, you must be logged into the Karunya Student Portal with your <strong>Register Number</strong> (URK24CS1001 to URK24CS1200) and <strong>Date of Birth</strong>.
+            </p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+              <a href="/student-login.html" class="btn btn-primary-custom px-4 py-2 fs-6">
+                <i class="bi bi-box-arrow-in-right me-2"></i> Log In to Lodge Complaint
+              </a>
+              <a href="/student-login.html#signupPane" class="btn btn-outline-secondary px-4 py-2 fs-6">
+                <i class="bi bi-person-plus me-2"></i> New Student Sign Up
+              </a>
+            </div>
+            <div class="mt-4 pt-3 border-top text-muted small">
+              <i class="bi bi-info-circle me-1"></i> Quick test accounts: Register Numbers <code>URK24CS1001</code> to <code>URK24CS1200</code> with DOB as password.
             </div>
           </div>
 
-          <!-- Registration Form Card -->
-          <div class="card card-modern p-4 p-md-5 border-0 shadow-lg">
-            <form id="complaintForm" novalidate enctype="multipart/form-data">
+          <!-- FORM WRAPPER: Shown ONLY when logged in -->
+          <div id="complaintFormWrapper" style="display: none;">
+            <!-- Instructions Card -->
+            <div class="alert alert-info border-0 rounded-4 d-flex align-items-center gap-3 p-3 mb-4 shadow-sm" id="instructionsCard">
+              <i class="bi bi-info-circle-fill fs-3 text-info"></i>
+              <div class="small">
+                <strong>Instructions:</strong> Please provide accurate contact and incident information. All fields marked with an asterisk (<span class="text-danger">*</span>) are strictly validated. You will receive an official tracking ticket upon successful submission.
+              </div>
+            </div>
+
+            <!-- Registration Form Card -->
+            <div class="card card-modern p-4 p-md-5 border-0 shadow-lg">
+              <form id="complaintForm" novalidate enctype="multipart/form-data">
               
               <!-- SECTION 1: Complainant Details -->
               <div class="mb-4">
@@ -239,6 +258,7 @@
               </div>
             </form>
           </div>
+          </div> <!-- Close #complaintFormWrapper -->
 
         </div>
       </div>

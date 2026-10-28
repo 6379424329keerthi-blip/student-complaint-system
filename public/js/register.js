@@ -25,43 +25,56 @@ document.addEventListener('DOMContentLoaded', () => {
   const titleCounter = document.getElementById('titleCounter');
   const descCounter = document.getElementById('descCounter');
 
-  // Auto-fill logged in student profile details if present
+  // Gatekeeper: Do NOT allow registering complaints without student login
+  const authRequiredGate = document.getElementById('authRequiredGate');
+  const complaintFormWrapper = document.getElementById('complaintFormWrapper');
+  const studentToken = localStorage.getItem('studentToken');
   const studentProfileJson = localStorage.getItem('studentProfile');
-  if (studentProfileJson) {
-    try {
-      const student = JSON.parse(studentProfileJson);
-      if (fullName && !fullName.value) { fullName.value = student.name; fullName.classList.add('is-valid'); }
-      if (email && !email.value) { email.value = student.email; email.classList.add('is-valid'); }
-      if (phone && !phone.value && student.phone) { phone.value = student.phone; phone.classList.add('is-valid'); }
-      const idNumber = document.getElementById('idNumber');
-      if (idNumber) { idNumber.value = student.registerNumber; idNumber.readOnly = true; }
-      if (userType) { userType.value = 'Student'; }
 
-      // Insert Logged in banner above form
-      const formCard = form.closest('.card');
-      if (formCard) {
-        const studentAlert = document.createElement('div');
-        studentAlert.className = 'alert alert-primary d-flex justify-content-between align-items-center p-3 mb-4 rounded-3 border-primary';
-        studentAlert.innerHTML = `
-          <div class="d-flex align-items-center gap-2 small">
-            <i class="bi bi-mortarboard-fill fs-5 text-primary"></i>
-            <span>Logged in as <strong>${escapeHTML(student.name)}</strong> (<code class="fw-bold">${escapeHTML(student.registerNumber)}</code>)</span>
-          </div>
-          <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2" id="formLogoutBtn">
-            <i class="bi bi-box-arrow-right"></i> Sign Out
-          </button>
-        `;
-        formCard.parentElement.insertBefore(studentAlert, formCard);
+  if (!studentToken || !studentProfileJson) {
+    if (authRequiredGate) authRequiredGate.style.display = 'block';
+    if (complaintFormWrapper) complaintFormWrapper.style.display = 'none';
+    return; // Block execution for unauthenticated users
+  }
 
-        document.getElementById('formLogoutBtn').addEventListener('click', () => {
-          localStorage.removeItem('studentToken');
-          localStorage.removeItem('studentProfile');
-          window.location.reload();
-        });
-      }
-    } catch (e) {
-      console.warn('Student autofill error:', e);
+  // Student is authenticated: reveal form
+  if (authRequiredGate) authRequiredGate.style.display = 'none';
+  if (complaintFormWrapper) complaintFormWrapper.style.display = 'block';
+
+  // Auto-fill logged in student profile details
+  try {
+    const student = JSON.parse(studentProfileJson);
+    if (fullName) { fullName.value = student.name; fullName.readOnly = true; fullName.classList.add('is-valid'); }
+    if (email) { email.value = student.email; email.readOnly = true; email.classList.add('is-valid'); }
+    if (phone && student.phone) { phone.value = student.phone; phone.classList.add('is-valid'); }
+    const idNumber = document.getElementById('idNumber');
+    if (idNumber) { idNumber.value = student.registerNumber; idNumber.readOnly = true; }
+    if (userType) { userType.value = 'Student'; }
+
+    // Insert Logged in banner above form
+    const formCard = form.closest('.card');
+    if (formCard) {
+      const studentAlert = document.createElement('div');
+      studentAlert.className = 'alert alert-primary d-flex justify-content-between align-items-center p-3 mb-4 rounded-3 border-primary';
+      studentAlert.innerHTML = `
+        <div class="d-flex align-items-center gap-2 small">
+          <i class="bi bi-mortarboard-fill fs-5 text-primary"></i>
+          <span>Logged in as <strong>${escapeHTML(student.name)}</strong> (<code class="fw-bold">${escapeHTML(student.registerNumber)}</code> &bull; ${escapeHTML(student.department || 'CSE')})</span>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2" id="formLogoutBtn">
+          <i class="bi bi-box-arrow-right"></i> Sign Out
+        </button>
+      `;
+      formCard.parentElement.insertBefore(studentAlert, formCard);
+
+      document.getElementById('formLogoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('studentToken');
+        localStorage.removeItem('studentProfile');
+        window.location.reload();
+      });
     }
+  } catch (e) {
+    console.warn('Student autofill error:', e);
   }
 
   // -------------------------------------------------------------------------
@@ -287,8 +300,19 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const response = await fetch('/api/complaints', {
         method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${studentToken}`
+        },
         body: formData
       });
+
+      if (response.status === 401) {
+        showToast('Your session has expired. Please log in again to lodge a complaint.', 'error');
+        localStorage.removeItem('studentToken');
+        localStorage.removeItem('studentProfile');
+        setTimeout(() => window.location.href = '/student-login.html', 1000);
+        return;
+      }
 
       const result = await response.json();
 

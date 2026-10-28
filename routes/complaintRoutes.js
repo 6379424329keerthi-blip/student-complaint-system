@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../middleware/upload');
+const { authenticateStudent } = require('../middleware/studentAuth');
 const {
   validateComplaintRegistration,
   validateComplaintTracking,
@@ -18,7 +19,9 @@ const {
 router.get('/public-stats', getPublicStats);
 router.get('/track', validateComplaintTracking, trackComplaint);
 router.get('/citizen', getCitizenComplaints);
-router.post('/', upload.single('attachment'), validateComplaintRegistration, registerComplaint);
+
+// Grievance submission strictly requires authenticated student login
+router.post('/', upload.single('attachment'), authenticateStudent, validateComplaintRegistration, registerComplaint);
 router.post('/:id/feedback', validateFeedback, submitFeedback);
 
 module.exports = router;
