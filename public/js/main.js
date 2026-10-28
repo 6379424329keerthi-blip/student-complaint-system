@@ -109,6 +109,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const studentProfileJson = localStorage.getItem('studentProfile');
   const navStudentAuthPill = document.getElementById('navStudentAuthPill');
 
+  // If student is logged in, REMOVE ALL Officer Portal buttons across all pages
+  if (studentToken) {
+    document.querySelectorAll('a[href*="admin.html"]:not(.navbar-brand), a[href*="/admin"]:not(.navbar-brand), .officer-portal-nav-item, .officer-portal-link').forEach(el => {
+      if (el.tagName === 'LI') {
+        el.remove();
+      } else if (el.parentElement && el.parentElement.tagName === 'LI') {
+        el.parentElement.remove();
+      } else {
+        el.style.display = 'none';
+      }
+    });
+
+    const footerOfficerSection = document.getElementById('footerOfficerSection');
+    if (footerOfficerSection) {
+      footerOfficerSection.style.display = 'none';
+    }
+  }
+
   if (navStudentAuthPill) {
     if (studentToken && studentProfileJson) {
       try {
