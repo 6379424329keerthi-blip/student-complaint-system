@@ -97,3 +97,45 @@
   padding: 1rem 1.25rem;
   margin-bottom: 1.5rem;
 }
+
+/* --------------------------------------------------------------------------
+   Admin Dashboard Navigation Tabs High-Contrast Styling
+   -------------------------------------------------------------------------- */
+#adminTabs .nav-link {
+  font-weight: 700;
+  color: #334155 !important;
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.65rem 1.25rem;
+  transition: all 0.2s ease;
+}
+
+#adminTabs .nav-link i {
+  color: #64748b;
+  transition: color 0.2s ease;
+}
+
+#adminTabs .nav-link:hover {
+  background-color: #f8fafc;
+  color: var(--primary) !important;
+}
+
+#adminTabs .nav-link:hover i {
+  color: var(--primary);
+}
+
+#adminTabs .nav-link.active,
+#adminTabs .nav-link.active:hover,
+#adminTabs .nav-link.active:focus {
+  color: #ffffff !important;
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+}
+
+#adminTabs .nav-link.active i,
+#adminTabs .nav-link.active:hover i,
+#adminTabs .nav-link.active:focus i {
+  color: #ffffff !important;
+}
