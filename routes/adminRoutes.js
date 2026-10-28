@@ -12,7 +12,10 @@ const {
   getComplaintDetails,
   updateComplaintStatus,
   exportComplaintsCSV,
-  deleteComplaint
+  deleteComplaint,
+  addStudentByOfficer,
+  getStudentsList,
+  downloadCredentialsPdf
 } = require('../controllers/adminController');
 
 // Public admin login
@@ -27,5 +30,10 @@ router.get('/complaints/:id', getComplaintDetails);
 router.put('/complaints/:id/status', validateStatusUpdate, updateComplaintStatus);
 router.get('/export/csv', exportComplaintsCSV);
 router.delete('/complaints/:id', deleteComplaint);
+
+// Student management routes for Officer/Admin
+router.post('/students', addStudentByOfficer);
+router.get('/students', getStudentsList);
+router.get('/students/credentials-pdf', downloadCredentialsPdf);
 
 module.exports = router;

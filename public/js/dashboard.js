@@ -1,6 +1,6 @@
 /**
- * Online Complaint Registration and Tracking System
- * Citizen Self-Service Dashboard Controller
+ * Student Online Complaint Registration and Tracking System
+ * Student Portal & Grievance History Controller with Full Logout Support
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,20 +9,118 @@ document.addEventListener('DOMContentLoaded', () => {
   const lookupBtn = document.getElementById('lookupBtn');
   const resultsContainer = document.getElementById('citizenResultsContainer');
   const emptyState = document.getElementById('citizenEmptyState');
-  const statsRow = document.getElementById('citizenStatsRow');
   const complaintsList = document.getElementById('citizenComplaintsList');
   const filterButtons = document.querySelectorAll('.citizen-filter-btn');
+
+  // Student Profile Elements
+  const studentBanner = document.getElementById('studentProfileBanner');
+  const guestPrompt = document.getElementById('guestLoginPrompt');
+  const profileName = document.getElementById('studentProfileName');
+  const profileRegNo = document.getElementById('studentProfileRegNo');
+  const profileDept = document.getElementById('studentProfileDept');
+  const profileEmail = document.getElementById('studentProfileEmail');
+  const logoutBtn = document.getElementById('studentLogoutBtn');
+  const logoutRegNoDisplay = document.getElementById('logoutRegNoDisplay');
 
   let allCitizenComplaints = [];
   let currentFilter = 'All';
 
-  // Check localStorage for saved citizen email or phone
-  const savedContact = localStorage.getItem('lastCitizenQuery');
-  if (savedContact && queryInput) {
-    queryInput.value = savedContact;
-    fetchCitizenComplaints(savedContact);
+  // Check if Student is logged in via JWT
+  const studentToken = localStorage.getItem('studentToken');
+  const studentProfileJson = localStorage.getItem('studentProfile');
+
+  if (studentToken && studentProfileJson) {
+    try {
+      const student = JSON.parse(studentProfileJson);
+      renderLoggedInStudent(student);
+      fetchStudentComplaints(studentToken);
+    } catch (e) {
+      handleStudentLogout();
+    }
+  } else {
+    // Check if there was a guest search query saved
+    const savedContact = localStorage.getItem('lastCitizenQuery');
+    if (savedContact && queryInput) {
+      queryInput.value = savedContact;
+      fetchGuestComplaints(savedContact);
+    }
   }
 
+  // Setup Student Logout
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      handleStudentLogout();
+    });
+  }
+
+  function handleStudentLogout() {
+    localStorage.removeItem('studentToken');
+    localStorage.removeItem('studentProfile');
+    showToast('Student successfully signed out.', 'info');
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+  }
+
+  function renderLoggedInStudent(student) {
+    if (guestPrompt) guestPrompt.style.display = 'none';
+    if (studentBanner) studentBanner.style.display = 'block';
+
+    if (profileName) profileName.textContent = student.name;
+    if (profileRegNo) profileRegNo.textContent = student.registerNumber;
+    if (profileDept) profileDept.textContent = student.department || 'Computer Science and Engineering';
+    if (profileEmail) profileEmail.textContent = student.email;
+    if (logoutRegNoDisplay) logoutRegNoDisplay.textContent = student.registerNumber;
+
+    // Update navbar pill
+    const navAuthPill = document.getElementById('navStudentAuthPill');
+    if (navAuthPill) {
+      navAuthPill.innerHTML = `
+        <div class="d-flex align-items-center gap-1">
+          <span class="badge bg-primary-subtle text-primary border border-primary px-2 py-2 font-monospace">
+            <i class="bi bi-person-circle me-1"></i> ${escapeHTML(student.registerNumber)}
+          </span>
+          <button type="button" class="btn btn-sm btn-outline-danger py-1 px-2" id="navLogoutBtn" title="Sign Out">
+            <i class="bi bi-box-arrow-right"></i>
+          </button>
+        </div>
+      `;
+      const navLogout = document.getElementById('navLogoutBtn');
+      if (navLogout) navLogout.addEventListener('click', handleStudentLogout);
+    }
+  }
+
+  // Fetch complaints for authenticated student
+  async function fetchStudentComplaints(token) {
+    try {
+      const res = await fetch('/api/students/my-complaints', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (res.status === 401) {
+        handleStudentLogout();
+        return;
+      }
+
+      const result = await res.json();
+      if (res.ok && result.success) {
+        allCitizenComplaints = result.data || [];
+        updateSummaryStats();
+        renderComplaints();
+
+        if (resultsContainer) resultsContainer.style.display = 'block';
+        if (allCitizenComplaints.length === 0 && emptyState) {
+          emptyState.style.display = 'block';
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching student complaints:', err);
+    }
+  }
+
+  // Guest lookup form listener
   if (lookupForm) {
     lookupForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -34,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       localStorage.setItem('lastCitizenQuery', query);
-      fetchCitizenComplaints(query);
+      fetchGuestComplaints(query);
     });
   }
 
@@ -51,10 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  async function fetchCitizenComplaints(searchQuery) {
+  async function fetchGuestComplaints(searchQuery) {
     if (lookupBtn) {
       lookupBtn.disabled = true;
-      lookupBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Finding Records...`;
+      lookupBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Searching...`;
     }
 
     try {
@@ -83,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } finally {
       if (lookupBtn) {
         lookupBtn.disabled = false;
-        lookupBtn.innerHTML = `<i class="bi bi-search me-2"></i> Find My Complaints`;
+        lookupBtn.innerHTML = `<i class="bi bi-search me-1"></i> Search`;
       }
     }
   }

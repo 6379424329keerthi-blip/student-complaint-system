@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Track Grievance Status | Online Complaint Registration and Tracking System</title>
+  <title>Track Grievance Status | Student Online Complaint Registration and Tracking System</title>
   
   <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,9 +24,12 @@
     <div class="container">
       <a class="navbar-brand" href="/">
         <div class="brand-icon">
-          <i class="bi bi-shield-check"></i>
+          <i class="bi bi-mortarboard-fill"></i>
         </div>
-        <span>Resolve<span class="text-primary">Track</span></span>
+        <div class="d-flex flex-column">
+          <span style="font-size: 1.15rem; line-height: 1.1;">Resolve<span class="text-primary">Track</span></span>
+          <small class="text-muted" style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.04em;">KARUNYA STUDENT GRIEVANCE PORTAL</small>
+        </div>
       </a>
       
       <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
@@ -45,14 +48,19 @@
             <a class="nav-link active" href="/track.html"><i class="bi bi-search me-1"></i> Track Status</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/dashboard.html"><i class="bi bi-person-workspace me-1"></i> My Complaints</a>
+            <a class="nav-link" href="/dashboard.html"><i class="bi bi-person-workspace me-1"></i> Student Portal</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/faq.html"><i class="bi bi-question-circle me-1"></i> Help & FAQs</a>
           </li>
-          <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-            <a class="btn btn-outline-primary btn-sm px-3 py-2 fw-semibold rounded-3" href="/admin.html">
-              <i class="bi bi-person-lock me-1"></i> Admin Portal
+          <li class="nav-item ms-lg-2 mt-2 mt-lg-0" id="navStudentAuthPill">
+            <a class="btn btn-outline-primary btn-sm px-3 py-2 fw-semibold rounded-3" href="/student-login.html">
+              <i class="bi bi-mortarboard me-1"></i> Student Login
+            </a>
+          </li>
+          <li class="nav-item ms-lg-1 mt-2 mt-lg-0">
+            <a class="btn btn-dark btn-sm px-3 py-2 fw-semibold rounded-3" href="/admin.html">
+              <i class="bi bi-person-lock me-1"></i> Officer Portal
             </a>
           </li>
         </ul>

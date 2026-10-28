@@ -1,4 +1,5 @@
-# Online Complaint Registration and Tracking System (ResolveTrack)
+# Student Online Complaint Registration and Tracking System (ResolveTrack)
+### Karunya Institute of Technology and Sciences — Grievance Redressal Portal
 
 [![Node.js](https://img.shields.io/badge/Node.js-v22-green.svg)](https://nodejs.org/)
 [![Express.js](https://img.shields.io/badge/Express.js-v5.3-blue.svg)](https://expressjs.com/)
@@ -7,7 +8,7 @@
 [![Status](https://img.shields.io/badge/Status-Complete%20%26%20Verified-success.svg)]()
 [![Assessment](https://img.shields.io/badge/Internal%20Assessment-20%2F20%20Marks-gold.svg)]()
 
-> A full-stack web application designed for transparent, accountable, and automated grievance redressal in educational institutions, organizations, and civic departments. Built with Node.js, Express, MongoDB, and modern Bootstrap 5.
+> A full-stack, enterprise-grade web application designed for transparent, accountable, and automated student grievance redressal at Karunya Institute of Technology and Sciences. Built with Node.js, Express, MongoDB, and modern Bootstrap 5.3.
 
 ---
 
@@ -165,16 +166,27 @@ NODE_ENV=development
 ```
 
 ### 3. Seed Database
-Pre-populate the database with default admin accounts and realistic complaints across all statuses:
+Pre-populate the database with Karunya administrator accounts, officer accounts, 200 enrolled students, and realistic complaints:
 ```bash
 npm run seed
 ```
 
 Default credentials seeded:
-- **SuperAdmin:** Username: `admin` | Password: `admin123`
-- **Department Officer:** Username: `officer_rajesh` | Password: `officer123`
+- **SuperAdmin:** Email/Username: `admin@karunya.edu.in` | Password: `Karunya@6379`
+- **Student Affairs Officer:** Email/Username: `studentaffairs@karunya.edu.in` | Password: `Affairs@1100`
+- **Enrolled Students:** 200 Students from `URK24CS1001` to `URK24CS1200`
+  - **Login ID:** Register Number (e.g. `URK24CS1001`)
+  - **Password:** Date of Birth (DD-MM-YYYY, e.g. `01-01-2006`)
+  - Complete credentials table exported to `STUDENT_LOGIN_CREDENTIALS_URK24CS1001_TO_URK24CS1200.pdf`!
 
-### 4. Start the Application
+### 4. Student & Officer Portals + Log Out Support
+- **Student Portal:** `http://localhost:5000/student-login.html` (or `dashboard.html`)
+  - Students sign in with Register Number + DOB.
+  - New students can self-register using the **Sign Up** tab.
+  - Active session displays student name & register number, with a dedicated **Sign Out** button.
+- **Officer & Admin Portal:** `http://localhost:5000/admin.html`
+  - Manage students, enroll new students, and download the verification PDF.
+  - Prominent **Sign Out** button in both top header and navbar.
 ```bash
 npm start
 ```

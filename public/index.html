@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Online Complaint Registration and Tracking System | Grievance Redressal Portal</title>
+  <title>Student Online Complaint Registration and Tracking System | Karunya Institute</title>
   
   <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,9 +24,12 @@
     <div class="container">
       <a class="navbar-brand" href="/">
         <div class="brand-icon">
-          <i class="bi bi-shield-check"></i>
+          <i class="bi bi-mortarboard-fill"></i>
         </div>
-        <span>Resolve<span class="text-primary">Track</span></span>
+        <div class="d-flex flex-column">
+          <span style="font-size: 1.15rem; line-height: 1.1;">Resolve<span class="text-primary">Track</span></span>
+          <small class="text-muted" style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.04em;">KARUNYA STUDENT GRIEVANCE PORTAL</small>
+        </div>
       </a>
       
       <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,14 +48,19 @@
             <a class="nav-link" href="/track.html"><i class="bi bi-search me-1"></i> Track Status</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/dashboard.html"><i class="bi bi-person-workspace me-1"></i> My Complaints</a>
+            <a class="nav-link" href="/dashboard.html"><i class="bi bi-person-workspace me-1"></i> Student Portal</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/faq.html"><i class="bi bi-question-circle me-1"></i> Help & FAQs</a>
           </li>
-          <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-            <a class="btn btn-outline-primary btn-sm px-3 py-2 fw-semibold rounded-3" href="/admin.html">
-              <i class="bi bi-person-lock me-1"></i> Admin Portal
+          <li class="nav-item ms-lg-2 mt-2 mt-lg-0" id="navStudentAuthPill">
+            <a class="btn btn-outline-primary btn-sm px-3 py-2 fw-semibold rounded-3" href="/student-login.html">
+              <i class="bi bi-mortarboard me-1"></i> Student Login
+            </a>
+          </li>
+          <li class="nav-item ms-lg-1 mt-2 mt-lg-0">
+            <a class="btn btn-dark btn-sm px-3 py-2 fw-semibold rounded-3" href="/admin.html">
+              <i class="bi bi-person-lock me-1"></i> Officer Portal
             </a>
           </li>
         </ul>
@@ -66,20 +74,23 @@
       <div class="row align-items-center g-5">
         <div class="col-lg-7">
           <div class="hero-badge">
-            <i class="bi bi-patch-check-fill"></i> Institutional Grievance Redressal System
+            <i class="bi bi-patch-check-fill"></i> Karunya Institute • Student Grievance Redressal
           </div>
           <h1 class="hero-title">
-            Fast, Transparent & Accountable <span>Complaint Resolution</span>
+            Student Online <span>Complaint Registration & Tracking System</span>
           </h1>
           <p class="hero-subtitle">
-            Welcome to the centralized Online Complaint Registration and Tracking System. Register grievances, monitor resolution milestones in real time, and hold department authorities accountable with full transparency.
+            A centralized digital grievance redressal system for students of Karunya Institute of Technology and Sciences. Register issues with your Register Number, monitor resolution milestones in real time, and hold department authorities accountable.
           </p>
           <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
             <a href="/register.html" class="btn btn-primary-custom d-flex align-items-center gap-2">
-              <i class="bi bi-pencil-square"></i> Register New Complaint
+              <i class="bi bi-pencil-square"></i> Lodge Student Complaint
             </a>
-            <a href="/track.html" class="btn btn-outline-custom d-flex align-items-center gap-2">
-              <i class="bi bi-geo-alt"></i> Track Existing Ticket
+            <a href="/student-login.html" class="btn btn-outline-custom d-flex align-items-center gap-2">
+              <i class="bi bi-person-badge"></i> Student Sign In (DOB)
+            </a>
+            <a href="/track.html" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+              <i class="bi bi-geo-alt"></i> Track Ticket ID
             </a>
           </div>
         </div>

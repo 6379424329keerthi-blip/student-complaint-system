@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
+const path = require('path');
+const fs = require('fs');
 const Admin = require('../models/Admin');
 const Complaint = require('../models/Complaint');
+const Student = require('../models/Student');
 
 /**
  * @desc    Admin / Officer Login
@@ -352,6 +355,134 @@ const deleteComplaint = async (req, res) => {
   }
 };
 
+/**
+ * @desc    Officer / Admin Add New Student
+ * @route   POST /api/admin/students
+ * @access  Private (Admin / Officer)
+ */
+const addStudentByOfficer = async (req, res) => {
+  try {
+    const { registerNumber, name, email, dob, department, phone } = req.body;
+
+    if (!registerNumber || !name || !email || !dob) {
+      return res.status(400).json({
+        success: false,
+        message: 'Register Number, Name, Email, and Date of Birth are mandatory.'
+      });
+    }
+
+    const regNo = registerNumber.trim().toUpperCase();
+    const cleanEmail = email.trim().toLowerCase();
+
+    const existing = await Student.findOne({
+      $or: [{ registerNumber: regNo }, { email: cleanEmail }]
+    });
+
+    if (existing) {
+      return res.status(400).json({
+        success: false,
+        message: `Student with Register Number ${regNo} or Email already exists.`
+      });
+    }
+
+    const student = new Student({
+      registerNumber: regNo,
+      name: name.trim(),
+      email: cleanEmail,
+      dob: dob.trim(),
+      department: department ? department.trim() : 'Computer Science and Engineering',
+      phone: phone ? phone.trim() : '9876543210',
+      password: dob.trim(), // DOB acts as initial password
+      addedBy: req.admin ? `${req.admin.name} (${req.admin.role})` : 'Officer'
+    });
+
+    await student.save();
+
+    return res.status(201).json({
+      success: true,
+      message: `Student ${regNo} - ${name} added successfully with initial password set to DOB (${dob.trim()}).`,
+      data: student
+    });
+  } catch (error) {
+    console.error('Add student error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to add student record.',
+      error: error.message
+    });
+  }
+};
+
+/**
+ * @desc    Officer / Admin Get List of Enrolled Students
+ * @route   GET /api/admin/students
+ * @access  Private (Admin / Officer)
+ */
+const getStudentsList = async (req, res) => {
+  try {
+    const { search = '', page = 1, limit = 50 } = req.query;
+
+    const query = {};
+    if (search.trim()) {
+      const s = search.trim();
+      query.$or = [
+        { registerNumber: { $regex: s, $options: 'i' } },
+        { name: { $regex: s, $options: 'i' } },
+        { email: { $regex: s, $options: 'i' } },
+        { department: { $regex: s, $options: 'i' } }
+      ];
+    }
+
+    const total = await Student.countDocuments(query);
+    const students = await Student.find(query)
+      .select('-password')
+      .sort({ registerNumber: 1 })
+      .skip((parseInt(page) - 1) * parseInt(limit))
+      .limit(parseInt(limit));
+
+    return res.status(200).json({
+      success: true,
+      total,
+      page: parseInt(page),
+      limit: parseInt(limit),
+      data: students
+    });
+  } catch (error) {
+    console.error('Get students list error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve students list.'
+    });
+  }
+};
+
+/**
+ * @desc    Officer / Admin Download PDF Credentials for URK24CS1001 - URK24CS1200
+ * @route   GET /api/admin/students/credentials-pdf
+ * @access  Private (Admin / Officer)
+ */
+const downloadCredentialsPdf = async (req, res) => {
+  try {
+    const pdfPath = path.join(__dirname, '..', 'STUDENT_LOGIN_CREDENTIALS_URK24CS1001_TO_URK24CS1200.pdf');
+    if (!fs.existsSync(pdfPath)) {
+      // Generate if not present
+      const generatePdf = require('../utils/generateCredentialsPdf');
+      await generatePdf();
+    }
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename="STUDENT_LOGIN_CREDENTIALS_URK24CS1001_TO_URK24CS1200.pdf"');
+    const fileStream = fs.createReadStream(pdfPath);
+    fileStream.pipe(res);
+  } catch (error) {
+    console.error('Error downloading credentials PDF:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to download credentials PDF.'
+    });
+  }
+};
+
 module.exports = {
   loginAdmin,
   getDashboardStats,
@@ -359,5 +490,8 @@ module.exports = {
   getComplaintDetails,
   updateComplaintStatus,
   exportComplaintsCSV,
-  deleteComplaint
+  deleteComplaint,
+  addStudentByOfficer,
+  getStudentsList,
+  downloadCredentialsPdf
 };

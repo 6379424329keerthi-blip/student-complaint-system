@@ -1,7 +1,7 @@
 {
   "name": "online-complaint-registration-and-tracking-system",
   "version": "1.0.0",
-  "description": "Full-Stack Online Complaint Registration and Tracking System built with Node.js, Express, MongoDB, and modern Bootstrap 5 UI",
+  "description": "",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -11,7 +11,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
@@ -22,6 +21,7 @@
     "mongoose": "^9.11.3",
     "morgan": "^1.12.1",
     "multer": "^2.5.0",
+    "pdfkit": "^0.20.2",
     "qrcode": "^1.5.4"
   }
 }

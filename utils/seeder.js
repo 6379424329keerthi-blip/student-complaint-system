@@ -3,7 +3,9 @@ const dotenv = require('dotenv');
 const QRCode = require('qrcode');
 const Admin = require('../models/Admin');
 const Complaint = require('../models/Complaint');
+const Student = require('../models/Student');
 const connectDB = require('../config/db');
+const { generateStudentList } = require('./studentSeedData');
 
 dotenv.config();
 
@@ -14,31 +16,49 @@ const seedData = async () => {
     console.log('[Seeder] Cleaning existing database records...');
     await Admin.deleteMany({});
     await Complaint.deleteMany({});
+    await Student.deleteMany({});
 
-    console.log('[Seeder] Creating default Admin & Staff accounts...');
+    console.log('[Seeder] Creating updated Admin & Officer accounts for Karunya...');
     const adminUser = new Admin({
       name: 'Dr. Suresh Kumar (Chief Administrator)',
-      username: 'admin',
-      email: 'admin@institution.edu',
-      password: 'admin123', // Will be hashed by pre('save') hook
+      username: 'admin@karunya.edu.in',
+      email: 'admin@karunya.edu.in',
+      password: 'Karunya@6379', // Will be hashed by pre('save') hook
       role: 'SuperAdmin',
       department: 'Central Grievance Redressal Cell'
     });
 
     const officerUser = new Admin({
-      name: 'Er. Rajesh Sharma (IT & Facilities Officer)',
-      username: 'officer_rajesh',
-      email: 'rajesh.sharma@institution.edu',
-      password: 'officer123',
+      name: 'Officer Student Affairs',
+      username: 'studentaffairs@karunya.edu.in',
+      email: 'studentaffairs@karunya.edu.in',
+      password: 'Affairs@1100',
       role: 'Officer',
-      department: 'IT & Network'
+      department: 'Department of Student Affairs'
     });
 
     await adminUser.save();
     await officerUser.save();
     console.log('[Seeder] Admin accounts created:');
-    console.log('   - SuperAdmin: admin / admin123');
-    console.log('   - Officer: officer_rajesh / officer123');
+    console.log('   - SuperAdmin: admin@karunya.edu.in / Karunya@6379');
+    console.log('   - Officer: studentaffairs@karunya.edu.in / Affairs@1100');
+
+    console.log('[Seeder] Seeding 200 Students (URK24CS1001 to URK24CS1200)...');
+    const studentList = generateStudentList();
+    for (const s of studentList) {
+      const studentDoc = new Student({
+        registerNumber: s.registerNumber,
+        name: s.name,
+        email: s.email,
+        dob: s.dob,
+        department: s.department,
+        phone: s.phone,
+        password: s.dob, // default password is DOB
+        addedBy: 'Student Affairs Officer'
+      });
+      await studentDoc.save();
+    }
+    console.log(`[Seeder] Seeded ${studentList.length} students with DOB as default login password.`);
 
     console.log('[Seeder] Seeding realistic complaints across multiple statuses...');
 

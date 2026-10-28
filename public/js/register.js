@@ -25,6 +25,45 @@ document.addEventListener('DOMContentLoaded', () => {
   const titleCounter = document.getElementById('titleCounter');
   const descCounter = document.getElementById('descCounter');
 
+  // Auto-fill logged in student profile details if present
+  const studentProfileJson = localStorage.getItem('studentProfile');
+  if (studentProfileJson) {
+    try {
+      const student = JSON.parse(studentProfileJson);
+      if (fullName && !fullName.value) { fullName.value = student.name; fullName.classList.add('is-valid'); }
+      if (email && !email.value) { email.value = student.email; email.classList.add('is-valid'); }
+      if (phone && !phone.value && student.phone) { phone.value = student.phone; phone.classList.add('is-valid'); }
+      const idNumber = document.getElementById('idNumber');
+      if (idNumber) { idNumber.value = student.registerNumber; idNumber.readOnly = true; }
+      if (userType) { userType.value = 'Student'; }
+
+      // Insert Logged in banner above form
+      const formCard = form.closest('.card');
+      if (formCard) {
+        const studentAlert = document.createElement('div');
+        studentAlert.className = 'alert alert-primary d-flex justify-content-between align-items-center p-3 mb-4 rounded-3 border-primary';
+        studentAlert.innerHTML = `
+          <div class="d-flex align-items-center gap-2 small">
+            <i class="bi bi-mortarboard-fill fs-5 text-primary"></i>
+            <span>Logged in as <strong>${escapeHTML(student.name)}</strong> (<code class="fw-bold">${escapeHTML(student.registerNumber)}</code>)</span>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2" id="formLogoutBtn">
+            <i class="bi bi-box-arrow-right"></i> Sign Out
+          </button>
+        `;
+        formCard.parentElement.insertBefore(studentAlert, formCard);
+
+        document.getElementById('formLogoutBtn').addEventListener('click', () => {
+          localStorage.removeItem('studentToken');
+          localStorage.removeItem('studentProfile');
+          window.location.reload();
+        });
+      }
+    } catch (e) {
+      console.warn('Student autofill error:', e);
+    }
+  }
+
   // -------------------------------------------------------------------------
   // Live Validation Rules
   // -------------------------------------------------------------------------

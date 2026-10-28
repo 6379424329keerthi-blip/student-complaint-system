@@ -113,27 +113,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const bannerLogoutBtn = document.getElementById('bannerLogoutBtn');
+  if (bannerLogoutBtn) {
+    bannerLogoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      logoutAdmin();
+    });
+  }
+
   function logoutAdmin() {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminProfile');
     showLogin();
-    showToast('Logged out successfully.', 'info');
+    showToast('Admin/Officer successfully logged out.', 'info');
   }
 
   function showLogin() {
     if (authSection) authSection.style.display = 'block';
     if (dashboardSection) dashboardSection.style.display = 'none';
+    if (logoutBtn) logoutBtn.style.display = 'none';
   }
 
   function showDashboard(admin) {
     if (authSection) authSection.style.display = 'none';
     if (dashboardSection) dashboardSection.style.display = 'block';
+    if (logoutBtn) logoutBtn.style.display = 'inline-flex';
 
     if (adminNameDisplay) adminNameDisplay.textContent = admin.name;
     if (adminRoleDisplay) adminRoleDisplay.textContent = `${admin.role} • ${admin.department}`;
 
     loadDashboardAnalytics();
     loadComplaintsTable();
+    loadStudentsTable();
   }
 
   // -------------------------------------------------------------------------
@@ -431,6 +442,144 @@ document.addEventListener('DOMContentLoaded', () => {
       } finally {
         saveStatusBtn.disabled = false;
         saveStatusBtn.innerHTML = `<i class="bi bi-check2-circle me-1"></i> Save Changes`;
+      }
+    });
+  }
+
+  // -------------------------------------------------------------------------
+  // Student Management Logic (URK24CS1001 to URK24CS1200)
+  // -------------------------------------------------------------------------
+  const studentsTableBody = document.getElementById('adminStudentsTable');
+  const studentSearchInput = document.getElementById('studentSearchInput');
+  const studentTotalCount = document.getElementById('studentTotalCount');
+  const addStudentForm = document.getElementById('addStudentForm');
+  const saveStudentBtn = document.getElementById('saveStudentBtn');
+  const addStudentModalEl = document.getElementById('addStudentModal');
+  let addStudentModalInstance = null;
+  if (addStudentModalEl) {
+    addStudentModalInstance = new bootstrap.Modal(addStudentModalEl);
+  }
+
+  async function loadStudentsTable() {
+    const currentToken = localStorage.getItem('adminToken');
+    if (!currentToken || !studentsTableBody) return;
+
+    const search = studentSearchInput ? studentSearchInput.value.trim() : '';
+
+    try {
+      const res = await fetch(`/api/admin/students?search=${encodeURIComponent(search)}&limit=250`, {
+        headers: { 'Authorization': `Bearer ${currentToken}` }
+      });
+
+      if (res.status === 401) {
+        logoutAdmin();
+        return;
+      }
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        const list = data.data || [];
+        if (studentTotalCount) studentTotalCount.textContent = data.total || list.length;
+
+        if (list.length === 0) {
+          studentsTableBody.innerHTML = `
+            <tr>
+              <td colspan="7" class="text-center py-4 text-muted">
+                <i class="bi bi-people fs-2 d-block mb-1"></i>
+                No enrolled students found matching search.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        studentsTableBody.innerHTML = list.map(s => `
+          <tr>
+            <td>
+              <span class="badge bg-primary font-monospace fs-6">${escapeHTML(s.registerNumber)}</span>
+            </td>
+            <td>
+              <strong class="text-dark">${escapeHTML(s.name)}</strong>
+            </td>
+            <td>
+              <small class="text-muted">${escapeHTML(s.email)}</small>
+            </td>
+            <td>
+              <span class="badge bg-danger-subtle text-danger border border-danger-subtle font-monospace">${escapeHTML(s.dob)}</span>
+            </td>
+            <td>
+              <small class="badge bg-light text-dark border">${escapeHTML(s.department || 'CSE')}</small>
+            </td>
+            <td>
+              <small class="text-muted">${escapeHTML(s.phone || 'N/A')}</small>
+            </td>
+            <td>
+              <span class="badge bg-secondary-subtle text-secondary small">${escapeHTML(s.addedBy || 'Officer')}</span>
+            </td>
+          </tr>
+        `).join('');
+      }
+    } catch (err) {
+      console.error('Error loading students table:', err);
+    }
+  }
+
+  // Student Search Listener with debounce
+  if (studentSearchInput) {
+    let studentDebounce;
+    studentSearchInput.addEventListener('input', () => {
+      clearTimeout(studentDebounce);
+      studentDebounce = setTimeout(loadStudentsTable, 300);
+    });
+  }
+
+  // Officer Add New Student Form Handler
+  if (addStudentForm) {
+    addStudentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const currentToken = localStorage.getItem('adminToken');
+      if (!currentToken) return;
+
+      const registerNumber = document.getElementById('newRegNo').value.trim();
+      const name = document.getElementById('newName').value.trim();
+      const email = document.getElementById('newEmail').value.trim();
+      const dob = document.getElementById('newDob').value.trim();
+      const department = document.getElementById('newDept').value;
+      const phone = document.getElementById('newPhone').value.trim();
+
+      if (!registerNumber || !name || !email || !dob) {
+        showToast('Please fill all mandatory fields.', 'warning');
+        return;
+      }
+
+      saveStudentBtn.disabled = true;
+      saveStudentBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Enrolling...`;
+
+      try {
+        const res = await fetch('/api/admin/students', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${currentToken}`
+          },
+          body: JSON.stringify({ registerNumber, name, email, dob, department, phone })
+        });
+
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showToast(data.message || 'Student enrolled successfully!', 'success');
+          addStudentForm.reset();
+          if (addStudentModalInstance) addStudentModalInstance.hide();
+          loadStudentsTable();
+        } else {
+          showToast(data.message || 'Failed to add student.', 'error');
+        }
+      } catch (err) {
+        console.error('Error adding student:', err);
+        showToast('Network error while enrolling student.', 'error');
+      } finally {
+        saveStudentBtn.disabled = false;
+        saveStudentBtn.innerHTML = `<i class="bi bi-check2-circle me-1"></i> Save & Enroll Student`;
       }
     });
   }

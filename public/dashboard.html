@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Citizen Dashboard | Online Complaint Registration and Tracking System</title>
+  <title>Student Grievance Dashboard | Student Online Complaint Registration and Tracking System</title>
   
   <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,9 +24,12 @@
     <div class="container">
       <a class="navbar-brand" href="/">
         <div class="brand-icon">
-          <i class="bi bi-shield-check"></i>
+          <i class="bi bi-mortarboard-fill"></i>
         </div>
-        <span>Resolve<span class="text-primary">Track</span></span>
+        <div class="d-flex flex-column">
+          <span style="font-size: 1.15rem; line-height: 1.1;">Resolve<span class="text-primary">Track</span></span>
+          <small class="text-muted" style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.04em;">KARUNYA STUDENT GRIEVANCE PORTAL</small>
+        </div>
       </a>
       
       <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
@@ -45,14 +48,23 @@
             <a class="nav-link" href="/track.html"><i class="bi bi-search me-1"></i> Track Status</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="/dashboard.html"><i class="bi bi-person-workspace me-1"></i> My Complaints</a>
+            <a class="nav-link active" href="/dashboard.html"><i class="bi bi-person-workspace me-1"></i> Student Portal</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/faq.html"><i class="bi bi-question-circle me-1"></i> Help & FAQs</a>
           </li>
-          <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-            <a class="btn btn-outline-primary btn-sm px-3 py-2 fw-semibold rounded-3" href="/admin.html">
-              <i class="bi bi-person-lock me-1"></i> Admin Portal
+          
+          <!-- Student Auth Pill (Dynamic) -->
+          <li class="nav-item ms-lg-2 mt-2 mt-lg-0" id="navStudentAuthPill">
+            <a class="btn btn-outline-primary btn-sm px-3 py-2 fw-semibold rounded-3" href="/student-login.html" id="navLoginBtn">
+              <i class="bi bi-person me-1"></i> Student Login
+            </a>
+          </li>
+
+          <!-- Admin Portal Link -->
+          <li class="nav-item ms-lg-1 mt-2 mt-lg-0">
+            <a class="btn btn-dark btn-sm px-3 py-2 fw-semibold rounded-3" href="/admin.html">
+              <i class="bi bi-shield-lock me-1"></i> Officer Portal
             </a>
           </li>
         </ul>
@@ -68,14 +80,17 @@
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-1 small">
               <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
-              <li class="breadcrumb-item active" aria-current="page">My Complaints</li>
+              <li class="breadcrumb-item active" aria-current="page">Student Grievance Dashboard</li>
             </ol>
           </nav>
-          <h2 class="fw-bold text-dark mb-0">Citizen Grievance History</h2>
+          <h2 class="fw-bold text-dark mb-0">Student Grievance Portal</h2>
         </div>
-        <a href="/register.html" class="btn btn-primary-custom btn-sm mt-2 mt-md-0">
-          <i class="bi bi-plus-circle me-1"></i> Lodge New Complaint
-        </a>
+        
+        <div class="d-flex gap-2 mt-2 mt-md-0">
+          <a href="/register.html" class="btn btn-primary-custom btn-sm">
+            <i class="bi bi-plus-circle me-1"></i> Lodge New Complaint
+          </a>
+        </div>
       </div>
     </div>
   </header>
@@ -83,44 +98,83 @@
   <!-- Main Content -->
   <main class="py-5">
     <div class="container">
-      
-      <!-- Lookup Form Card -->
-      <div class="row justify-content-center mb-4">
-        <div class="col-lg-8">
-          <div class="card card-modern p-4 border-0 shadow-sm">
-            <h5 class="fw-bold text-dark mb-2"><i class="bi bi-person-badge text-primary me-2"></i>Access Your Grievance Records</h5>
-            <p class="text-muted small mb-3">Enter your registered email address or 10-digit mobile number to view all historical complaints.</p>
-            
-            <form id="citizenLookupForm" class="row g-2">
-              <div class="col-md-9">
-                <div class="input-group">
-                  <span class="input-group-text bg-light text-muted"><i class="bi bi-person-check"></i></span>
-                  <input type="text" id="citizenQuery" class="form-control" placeholder="e.g. aarav.patel@student.edu or 9876543210" required>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <button type="submit" class="btn btn-primary-custom w-100" id="lookupBtn">
-                  <i class="bi bi-search me-1"></i> Find Records
-                </button>
-              </div>
-            </form>
 
-            <!-- Sample test quick links -->
-            <div class="mt-3 pt-3 border-top small text-muted">
-              <span class="fw-bold text-dark"><i class="bi bi-lightbulb text-warning me-1"></i> Quick Test (Seeded users):</span>
-              <button type="button" class="btn btn-sm btn-link py-0 px-1 text-decoration-none" onclick="document.getElementById('citizenQuery').value='aarav.patel@student.edu'; document.getElementById('citizenLookupForm').requestSubmit();">
-                aarav.patel@student.edu
-              </button>
-              |
-              <button type="button" class="btn btn-sm btn-link py-0 px-1 text-decoration-none" onclick="document.getElementById('citizenQuery').value='kavita.m@student.edu'; document.getElementById('citizenLookupForm').requestSubmit();">
-                kavita.m@student.edu
-              </button>
+      <!-- ===================================================================
+           LOGGED-IN STUDENT PROFILE BANNER & LOG OUT
+           =================================================================== -->
+      <div id="studentProfileBanner" style="display: none;" class="card card-modern p-4 mb-4 border-0 shadow-sm bg-white">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+          <div class="d-flex align-items-center gap-3">
+            <div class="brand-icon bg-primary text-white" style="width: 52px; height: 52px; font-size: 1.5rem;">
+              <i class="bi bi-person-badge-fill"></i>
+            </div>
+            <div>
+              <div class="d-flex align-items-center gap-2 mb-1">
+                <h4 class="fw-bold text-dark mb-0" id="studentProfileName">Aarav Sharma</h4>
+                <span class="badge bg-primary font-monospace fs-6 px-2 py-1" id="studentProfileRegNo">URK24CS1001</span>
+              </div>
+              <div class="text-muted small">
+                <i class="bi bi-building me-1"></i> <span id="studentProfileDept">Computer Science and Engineering</span>
+                <span class="mx-2">&bull;</span>
+                <i class="bi bi-envelope me-1"></i> <span id="studentProfileEmail">urk24cs1001@karunya.edu.in</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Prominent Student Logout Button -->
+          <div class="d-flex gap-2">
+            <a href="/register.html" class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1">
+              <i class="bi bi-pencil-square"></i> New Grievance
+            </a>
+            <button type="button" class="btn btn-danger btn-sm d-flex align-items-center gap-1" id="studentLogoutBtn">
+              <i class="bi bi-box-arrow-right"></i> Sign Out (<span id="logoutRegNoDisplay">URK24CS1001</span>)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           GUEST / LOOKUP CARD (Shown if not logged in)
+           =================================================================== -->
+      <div id="guestLoginPrompt" class="row justify-content-center mb-4">
+        <div class="col-lg-8">
+          <div class="card card-modern p-4 border-0 shadow-sm text-center">
+            <div class="feature-icon-wrapper feature-icon-primary mx-auto mb-2">
+              <i class="bi bi-key-fill"></i>
+            </div>
+            <h4 class="fw-bold text-dark">Welcome, Karunya Student!</h4>
+            <p class="text-muted small max-w-500 mx-auto mb-4">
+              Sign in with your <strong>Register Number</strong> (URK24CS1001 to URK24CS1200) and your <strong>Date of Birth</strong> (DD-MM-YYYY) to view and track your grievances.
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+              <a href="/student-login.html" class="btn btn-primary-custom px-4 py-2">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Log In with Register Number & DOB
+              </a>
+              <a href="/student-login.html#signupPane" class="btn btn-outline-secondary px-4 py-2">
+                <i class="bi bi-person-plus me-1"></i> New Student Sign Up
+              </a>
+            </div>
+
+            <div class="mt-4 pt-3 border-top text-muted small">
+              <span class="text-dark fw-bold">Visitor / Public Grievance Lookup:</span>
+              <form id="citizenLookupForm" class="row g-2 mt-2 justify-content-center">
+                <div class="col-md-7">
+                  <input type="text" id="citizenQuery" class="form-control form-control-sm" placeholder="Or lookup by email / mobile number...">
+                </div>
+                <div class="col-md-3">
+                  <button type="submit" class="btn btn-outline-dark btn-sm w-100" id="lookupBtn">
+                    <i class="bi bi-search me-1"></i> Search
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Results Section -->
+      <!-- ===================================================================
+           RESULTS & COMPLAINTS SECTION
+           =================================================================== -->
       <div id="citizenResultsContainer" style="display: none;">
         <!-- Metrics Row -->
         <div class="row g-3 mb-4" id="citizenStatsRow">
@@ -166,10 +220,13 @@
       </div>
 
       <!-- Initial Empty State -->
-      <div id="citizenEmptyState" class="text-center py-5">
+      <div id="citizenEmptyState" class="text-center py-5" style="display: none;">
         <i class="bi bi-folder-check fs-1 text-muted"></i>
-        <h5 class="fw-bold text-dark mt-3">No Records Displayed Yet</h5>
-        <p class="text-muted small">Enter your email or phone number above to pull up all your submitted tickets and current case statuses.</p>
+        <h5 class="fw-bold text-dark mt-3">No Grievances Found</h5>
+        <p class="text-muted small">You haven't lodged any complaints yet. Click below to submit your first case.</p>
+        <a href="/register.html" class="btn btn-primary-custom btn-sm">
+          <i class="bi bi-plus-circle me-1"></i> Lodge a Grievance
+        </a>
       </div>
 
     </div>
@@ -178,7 +235,7 @@
   <!-- Footer -->
   <footer class="footer-custom">
     <div class="container text-center small text-muted">
-      &copy; 2026 Online Complaint Registration and Tracking System. Built for Web Technology Internal Assessment.
+      &copy; 2026 Student Online Complaint Registration and Tracking System. Karunya Institute of Technology and Sciences.
     </div>
   </footer>
 

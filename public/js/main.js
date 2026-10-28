@@ -104,6 +104,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Dynamic Auth State in Navbar across all pages
+  const studentToken = localStorage.getItem('studentToken');
+  const studentProfileJson = localStorage.getItem('studentProfile');
+  const navStudentAuthPill = document.getElementById('navStudentAuthPill');
+
+  if (navStudentAuthPill) {
+    if (studentToken && studentProfileJson) {
+      try {
+        const student = JSON.parse(studentProfileJson);
+        navStudentAuthPill.innerHTML = `
+          <div class="d-flex align-items-center gap-1">
+            <a href="/dashboard.html" class="btn btn-sm btn-outline-primary py-1 px-2 font-monospace" title="My Student Portal">
+              <i class="bi bi-person-circle me-1"></i> ${escapeHTML(student.registerNumber)}
+            </a>
+            <button type="button" class="btn btn-sm btn-outline-danger py-1 px-2" id="navGlobalLogoutBtn" title="Sign Out">
+              <i class="bi bi-box-arrow-right"></i>
+            </button>
+          </div>
+        `;
+        const logoutBtn = document.getElementById('navGlobalLogoutBtn');
+        if (logoutBtn) {
+          logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('studentToken');
+            localStorage.removeItem('studentProfile');
+            showToast('Signed out of student account.', 'info');
+            setTimeout(() => window.location.reload(), 400);
+          });
+        }
+      } catch (e) {}
+    } else {
+      navStudentAuthPill.innerHTML = `
+        <a class="btn btn-outline-primary btn-sm px-3 py-2 fw-semibold rounded-3" href="/student-login.html">
+          <i class="bi bi-mortarboard me-1"></i> Student Login
+        </a>
+      `;
+    }
+  }
+
   // Load public stats if on landing page
   const statsSection = document.getElementById('publicStatsSection');
   if (statsSection) {

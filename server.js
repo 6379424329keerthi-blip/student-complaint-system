@@ -33,6 +33,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // API Routes
 app.use('/api/complaints', require('./routes/complaintRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/students', require('./routes/studentRoutes'));
 
 // Fallback HTML page routes for direct clean navigation
 app.get('/', (req, res) => {
@@ -49,6 +50,10 @@ app.get('/track', (req, res) => {
 
 app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
+});
+
+app.get('/student-login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'student-login.html'));
 });
 
 app.get('/admin', (req, res) => {
