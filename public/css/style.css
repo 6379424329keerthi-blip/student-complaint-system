@@ -660,8 +660,16 @@ main {
   margin-bottom: 1.25rem;
 }
 
-.footer-custom a {
+.footer-custom p,
+.footer-custom li,
+.footer-custom span {
   color: #94a3b8;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.footer-custom a {
+  color: #cbd5e1;
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -670,9 +678,14 @@ main {
   color: #ffffff;
 }
 
+.footer-custom strong {
+  color: #f8fafc;
+}
+
 .footer-bottom {
   border-top: 1px solid #334155;
   padding-top: 1.5rem;
   margin-top: 2.5rem;
   font-size: 0.85rem;
+  color: #94a3b8;
 }
