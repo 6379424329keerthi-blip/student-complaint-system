@@ -56,6 +56,11 @@ app.get('/student-login', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'student-login.html'));
 });
 
+app.get('/download-credentials-pdf', (req, res) => {
+  const pdfPath = path.join(__dirname, 'STUDENT_LOGIN_CREDENTIALS_URK24CS1001_TO_URK24CS1200.pdf');
+  res.download(pdfPath, 'STUDENT_LOGIN_CREDENTIALS_URK24CS1001_TO_URK24CS1200.pdf');
+});
+
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
